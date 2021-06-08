@@ -24,6 +24,9 @@ jobs:
         uses: jwlawson/actions-setup-bazel@v1
         with:
           bazel-version: '3.7.2'
+      - name: Install Python building dependencies
+        run: |
+          pip3 install numpy
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
