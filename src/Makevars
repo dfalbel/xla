@@ -1,0 +1,29 @@
+all: $(SHLIB) clone_tf copy_rclient bazel_build copy_librclient
+
+clone_tf:
+	@echo "Cloning the tensorflow repository"
+    if [! -d "tensorflow"] \
+    then \
+	    git clone --depth 1 https://github.com/tensorflow/tensorflow.git ; \
+    fi
+    
+
+copy_rclient:
+	@echo "Cloning R client files"
+	cp -r "r-client" "tensorflow/tensorflow/compiler/xla/"
+
+bazel_build:
+	@echo "Running bazel build"
+	cd tensorflow; bazel build //tensorflow/compiler/xla/r-client:librclient.so
+
+copy_librclient:
+	@echo "Copying librclient.so"
+	cp tensorflow/bazel-bin/tensorflow/compiler/xla/r-client/librclient.so .
+
+copy_rclient : clone_tf
+bazel_build : copy_rclient
+copy_librclient : bazel_build
+$(SHLIB) : copy_librclient
+
+PKG_CPPFLAGS=""
+PKG_LIBS=-Wl,-rpath,"." -Wl,-rpath,"/Users/dfalbel/Documents/xla/src" -Wl,-rpath,"/Users/dfalbel/Documents/xla/src/tensorflow/bazel-bin/tensorflow" -L"." -lrclient

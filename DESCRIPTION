@@ -1,0 +1,19 @@
+Package: xla
+Title: XLA Client Interface
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Daniel",
+           family = "Falbel",
+           role = c("aut", "cre"),
+           email = "daniel@rstudio.com"
+           )
+Description: Provides an interface to TensorFlow's XLA compiler allowing users to
+    write, build and run XLA programs directly from R.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+LinkingTo: 
+    cpp11
+SystemRequirements: C++11
