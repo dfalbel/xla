@@ -1,28 +1,25 @@
 all: $(SHLIB) clone_tf copy_rclient bazel_build
 
 clone_tf:
-	@echo "Cloning the tensorflow repository"
+	@echo "Cloning the tensorflow repository ----------------------------------"
 	if [ ! -d "tensorflow" ]; \
 	then \
 		git clone --depth 1 https://github.com/tensorflow/tensorflow.git ;\
 	fi
 
 copy_rclient: clone_tf
-	@echo "Cloning R client files"
+	@echo "Cloning R client files ---------------------------------------------"
 	cp -r "r-client" "tensorflow/tensorflow/compiler/xla/"
 
 bazel_build: copy_rclient
-	@echo "Running bazel build"
+	@echo "Running bazel build ------------------------------------------------"
 	cd tensorflow; bazel build //tensorflow/compiler/xla/r-client:librclient.so
 
 $(SHLIB) : bazel_build
 
 PKG_CPPFLAGS="" 
 PKG_LIBS+=-Wl,-rpath,"@loader_path/r-client/"  
-PKG_LIBS+=-Wl,-rpath,"@loader_path/r-client/librclient.so.runfiles/org_tensorflow/tensorflow"   
-PKG_LIBS+=-Wl,-rpath,"./tensorflow/compiler/xla/r-client/"
-PKG_LIBS+=-Wl,-rpath,"$(shell "${R_HOME}/bin/Rscript" -e "getwd()")"
-PKG_LIBS+=-Wl,-rpath,"$(shell "${R_HOME}/bin/Rscript" -e "getwd()")/tensorflow/bazel-bin/tensorflow"
-PKG_LIBS+=-L"r-client/"
+PKG_LIBS+=-Wl,-rpath,"@loader_path/r-client/librclient.so.runfiles/org_tensorflow/tensorflow" 
+PKG_LIBS+=-Wl,-rpath,"$(shell "${R_HOME}/bin/Rscript" -e "cat(getwd())")/tensorflow/bazel-bin/tensorflow/compiler/xla/r-client"  
 PKG_LIBS+=-L"tensorflow/bazel-bin/tensorflow/compiler/xla/r-client/" 
 PKG_LIBS+=-lrclient
