@@ -3,4 +3,5 @@
 ^LICENSE\.md$
 ^\.github$
 ^src\\tensorflow$
-^src/tensorflow$
+^src/tensorflow/.*$
+^\.vscode$
