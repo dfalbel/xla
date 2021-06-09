@@ -19,4 +19,4 @@ copy_librclient: bazel_build
 $(SHLIB) : copy_librclient
 
 PKG_CPPFLAGS=""
-PKG_LIBS=-Wl,-rpath,"." -Wl,-rpath,"/Users/dfalbel/Documents/xla/src" -Wl,-rpath,"/Users/dfalbel/Documents/xla/src/tensorflow/bazel-bin/tensorflow" -L"." -lrclient
+PKG_LIBS=-Wl,-rpath,"." -Wl,-rpath,"$(shell "${R_HOME}/bin/Rscript" -e "getwd()")" -Wl,-rpath,"$(shell "${R_HOME}/bin/Rscript" -e "getwd()")/tensorflow/bazel-bin/tensorflow" -L"." -lrclient
