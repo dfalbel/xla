@@ -60,6 +60,9 @@ cc_library(
     deps = [
         "//tensorflow/compiler/xla/client",
         "//tensorflow/compiler/xla/client:xla_builder",
+        "//tensorflow/compiler/xla/pjrt:cpu_device",
+        "//tensorflow/compiler/xla/pjrt:pjrt_client",
+        "//tensorflow/compiler/xla:shape_util"
     ],
     alwayslink = 1,
 )
